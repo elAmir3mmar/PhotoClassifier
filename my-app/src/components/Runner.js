@@ -1,21 +1,27 @@
 import React from 'react';
 import { Jumbotron, Button } from 'reactstrap';
+import $ from 'jquery'; 
+
 
 class Runner extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
   componentDidMount(){
     document.addEventListener('keydown', this.handlePress);
   }
+
   render() {
   return (
     <div>
       <Jumbotron>
-        
         <h1 className="display-3">Photo Classifier</h1>
         <p className="lead">Please classify the photos using the keyboard shortcuts.</p>
         <hr className="my-2" />
         <p></p>
         <p className="lead">
-        <img src={process.env.PUBLIC_URL + '/photos/4KK2_20150823_152106_985.jpg'} alt="logo" />
+        <img src={process.env.PUBLIC_URL + urls[0]} alt="logo" />
         <p> </p>
         <strong id='tspacer'>Category 1</strong>
         <strong id='tspacer'>Category 2</strong>
@@ -32,6 +38,7 @@ class Runner extends React.Component {
   
 };
 
+// handle F J Space actions
 handlePress(event) {
   // F is pressed
   if(event.keyCode === 70) {
@@ -46,5 +53,11 @@ handlePress(event) {
   }
 }}
 
+// map images
+function importAll(r) {
+  return r.keys().map(r);
+}
 
+// urls is now set to all images
+const urls = importAll(require.context('../../public/photos', false, /\.(png|jpe?g|svg)$/));
 export default Runner;

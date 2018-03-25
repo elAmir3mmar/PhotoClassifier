@@ -21,7 +21,7 @@ class Runner extends React.Component {
         <hr className="my-2" />
         <p></p>
         <p className="lead">
-        <img src={process.env.PUBLIC_URL + urls[0]} alt="logo" />
+        <img src={process.env.PUBLIC_URL + urls[0]} alt="image" />
         <p> </p>
         <strong id='tspacer'>Category 1</strong>
         <strong id='tspacer'>Category 2</strong>

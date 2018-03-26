@@ -20,7 +20,7 @@ class Runner extends React.Component {
         <hr className="my-2" />
         <p></p>
         <p className="lead">
-        <img src={process.env.PUBLIC_URL + urls[0]} alt="image" />
+        <img id="Image" src={process.env.PUBLIC_URL + urls[idx]} alt="image"  />
         <p> </p>
         <strong id='tspacer'>Category 1</strong>
         <strong id='tspacer'>Category 2</strong>
@@ -45,22 +45,24 @@ class Runner extends React.Component {
 handlePress(event) {
   // F is pressed
   if(event.keyCode === 70) {
-    var imageURL=urls[0].split('/')[3];
-    logCategory(1, imageURL);
+    logCategory(1);
+    updateImg();
     }
     // J is pressed
   if(event.keyCode === 74) {
-    var imageURL=urls[0];
-    logCategory(2, imageURL);
+    logCategory(2);
+    updateImg();
   }
   if(event.keyCode === 32) {
-    var imageURL=urls[0];
-    logCategory(3, imageURL);
+    logCategory(3);
+    updateImg();
   }
 }}
 
 //Function to write categories to file. 
-function logCategory (category, imageURL) {
+function logCategory (category) {
+  var imageURL=urls[idx].split('/')[3];
+
   var content = imageURL + "," + category;
   
   console.log(content);
@@ -71,6 +73,11 @@ function logCategory (category, imageURL) {
 
   var str = "Assigned category: " + category + " to image: " + imageURL;
   $("#feedback").text(str);
+}
+
+function updateImg(){
+	idx ++;
+	$("#Image").attr("src", process.env.PUBLIC_URL + urls[idx]);
 }
 
 function viewResults(){
@@ -92,4 +99,5 @@ function importAll(r) {
 
 // urls is now set to all images
 const urls = importAll(require.context('../../public/photos', false, /\.(png|jpe?g|svg)$/));
+var idx = 0;
 export default Runner;

@@ -2,7 +2,6 @@ import React from 'react';
 import { Jumbotron, Button } from 'reactstrap';
 import $ from 'jquery'; 
 
-
 class Runner extends React.Component {
   constructor(props) {
     super(props);
@@ -28,12 +27,15 @@ class Runner extends React.Component {
         <strong id='tspacer'>Category 3</strong>
         <p></p>
         
-        <Button id='spacer' color="primary" size="lg" >F</Button>
-        <Button id='spacer' color="primary" size="lg" >J</Button>
-        <Button id='spacer' color="primary" size="lg" >Space</Button>
+        <Button id='spacer' color="primary" size="lg" disabled="True" >F</Button>
+        <Button id='spacer' color="primary" size="lg" disabled="True" >J</Button>
+        <Button id='spacer' color="primary" size="lg" disabled="True" >Space</Button>
         </p>
-        <div id='feedback'></div>
+        <p id='feedback'></p>
+        <p id="save-p" onClick={viewResults}>Results</p>
+        <div id="log" style={{display:"none"}}></div>
       </Jumbotron>
+
     </div>
   );
   
@@ -43,36 +45,42 @@ class Runner extends React.Component {
 handlePress(event) {
   // F is pressed
   if(event.keyCode === 70) {
-    var category = 1;
-    var imageURL=urls[0];
-    logCategory(category, imageURL, fileName);
-    feedback("Assigned category: " + category + " to image: " + imageURL);
-    // alert('Call function to Record Category 1 and load next photo');
+    var imageURL=urls[0].split('/')[3];
+    logCategory(1, imageURL);
     }
     // J is pressed
   if(event.keyCode === 74) {
-    var category = 2;
     var imageURL=urls[0];
-    logCategory(category, imageURL, fileName);
-    // alert('Call function to Record Category 2 and load next photo');
+    logCategory(2, imageURL);
   }
   if(event.keyCode === 32) {
-    var category = 3;
     var imageURL=urls[0];
-    logCategory(category, imageURL, fileName);
-    // alert('Call function to Record Category 3 and load next photo');
+    logCategory(3, imageURL);
   }
 }}
 
-//Trying to update feedback
-function feedback(str) {
-  var container = document.getElementById("feedback");
-  var s = React.createClass({
-      render: function() {
-          return <p id="feedbackString">HERE</p>;
-      }
-  });
-  container.replaceChild(s);
+//Function to write categories to file. 
+function logCategory (category, imageURL) {
+  var content = imageURL + "," + category;
+  
+  console.log(content);
+  
+  $("#log").html = ":hi:" + category;	
+  var log = document.getElementById("log");
+  log.innerHTML = log.innerHTML + content + "<br />";
+
+  var str = "Assigned category: " + category + " to image: " + imageURL;
+  $("#feedback").text(str);
+}
+
+function viewResults(){
+    var x = document.getElementById("log");
+    if (x.style.display === "none") {
+        x.style.display = "block";
+    } else {
+        x.style.display = "none";
+    }
+  	console.log('button press. log display: ' + x.style.display);
 }
 
 
@@ -81,51 +89,7 @@ function importAll(r) {
   return r.keys().map(r);
 }
 
-//Should check if log file exists or create it.
-function initLog() {
-  var fs = require('fs');
-  var date = new Date();
-  var hour = date.getHours();
-  var minute = date.getMinutes();
-  var day = date.getDay();
-  var filename = "" + day + "_" + hour + ":" + minute + ".log";
-  
-  console.log(filename);
-
-      console.log(filename + ' does not exist');
-      var createFile = require('create-file');
-      createFile('../../public/logs/'+fileName, Date(), function (err) {
-        // file either already exists or is now created (including non existing directories)
-        if(err){
-          console.log("Failed to create file " + filename + " in ../../public/logs/");
-        } 
-      return filename;
-      });
-
-      console.log(filename + "already exists");
-      return filename;
-}
-
-//Function to write categories to file. 
-function logCategory (category, imageURL, fileName) {
-  var content = imageURL + "," + category
-  var writeFile = require('write');
-  writeFile('../../public/logs/'+fileName, content, function(err) {
-    if (err) console.log(err);
-  });
-  
-  // var fs = require('fs');
-  // const writeFileP = require("write-file-p");
-
-
-  // writeFileP('../../public/logs/'+fileName, content, (err, data) => {
-  //     console.log(err || data);
-  // });
-
-}
 
 // urls is now set to all images
 const urls = importAll(require.context('../../public/photos', false, /\.(png|jpe?g|svg)$/));
-// const fileName = initLog();
-const fileName = "log.log";
 export default Runner;

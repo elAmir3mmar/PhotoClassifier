@@ -20,7 +20,7 @@ class Runner extends React.Component {
         <hr className="my-2" />
         <p></p>
         <p className="lead">
-        <img id="Image" src={process.env.PUBLIC_URL + urls[idx]} alt="image"  />
+        <img id="Image" src={process.env.PUBLIC_URL + urls[idx]} alt="image" />
         <p> </p>
         <strong id='tspacer'>Category 1</strong>
         <strong id='tspacer'>Category 2</strong>
@@ -59,11 +59,13 @@ handlePress(event) {
   }
 }}
 
+
+
 //Function to write categories to file. 
 function logCategory (category) {
   var imageURL=urls[idx].split('/')[3];
 
-  var content = imageURL + "," + category;
+  var content = imageURL + "," + category + "," + new Date().getTime();
   
   console.log(content);
   

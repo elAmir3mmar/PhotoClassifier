@@ -19,20 +19,21 @@ class Runner extends React.Component {
         <p className="lead">Please classify the photos using the keyboard shortcuts.</p>
         <hr className="my-2" />
         <p></p>
-        <p className="lead">
-        <img id="Image" src={process.env.PUBLIC_URL + urls[idx]} alt="image" />
-        <p> </p>
+        <div className="lead">
+        <img id="Image" src={process.env.PUBLIC_URL + urls[idx]} alt="image" onClick={imgZoom} />
+        <p> Click on the Image to enlarge. </p>
         <strong id='tspacer'>Category 1</strong>
         <strong id='tspacer'>Category 2</strong>
         <strong id='tspacer'>Category 3</strong>
-        <p></p>
+        </div>
+        <p>
         
         <Button id='spacer' color="primary" size="lg" disabled="True" >F</Button>
         <Button id='spacer' color="primary" size="lg" disabled="True" >J</Button>
         <Button id='spacer' color="primary" size="lg" disabled="True" >Space</Button>
         </p>
         <p id='feedback'></p>
-        <p id="save-p" onClick={viewResults}>Results</p>
+        <p id="save-p" style={{color:'white'}} onClick={viewResults}>Results</p>
         <div id="log" style={{display:"none"}}></div>
       </Jumbotron>
 
@@ -58,7 +59,6 @@ handlePress(event) {
     updateImg();
   }
 }}
-
 
 
 //Function to write categories to file. 
@@ -92,6 +92,19 @@ function viewResults(){
   	console.log('button press. log display: ' + x.style.display);
 }
 
+function imgZoom() {
+	var img = document.getElementById("Image");
+	if (img.height === 400) {
+		console.log("found400");
+		$('#Image').height(800);
+	} else {
+		$('#Image').height(400);
+
+	}
+
+
+	console.log("Image click " + img.height)
+}
 
 // map images
 function importAll(r) {

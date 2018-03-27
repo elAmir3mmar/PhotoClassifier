@@ -28,9 +28,9 @@ class Runner extends React.Component {
         </div>
         <p>
         
-        <Button id='spacer' color="primary" size="lg" disabled="True" >F</Button>
-        <Button id='spacer' color="primary" size="lg" disabled="True" >J</Button>
-        <Button id='spacer' color="primary" size="lg" disabled="True" >Space</Button>
+        <Button id='spacer' color="primary" size="lg" disabled={true} >F</Button>
+        <Button id='spacer' color="primary" size="lg" disabled={true} >J</Button>
+        <Button id='spacer' color="primary" size="lg" disabled={true} >Space</Button>
         </p>
         <p id='feedback'></p>
         <p id="save-p" style={{color:'white'}} onClick={viewResults}>Results</p>
@@ -44,19 +44,21 @@ class Runner extends React.Component {
 
 // handle F J Space actions
 handlePress(event) {
-  // F is pressed
-  if(event.keyCode === 70) {
-    logCategory(1);
-    updateImg();
-    }
-    // J is pressed
-  if(event.keyCode === 74) {
-    logCategory(2);
-    updateImg();
-  }
-  if(event.keyCode === 32) {
-    logCategory(3);
-    updateImg();
+  if (count < n) {
+	  // F is pressed
+	  if(event.keyCode === 70) {
+	    logCategory(1);
+	    updateImg();
+	    }
+	    // J is pressed
+	  if(event.keyCode === 74) {
+	    logCategory(2);
+	    updateImg();
+	  }
+	  if(event.keyCode === 32) {
+	    logCategory(3);
+	    updateImg();
+	  }
   }
 }}
 
@@ -78,7 +80,7 @@ function logCategory (category) {
 }
 
 function updateImg(){
-	idx ++;
+	idx = idxAdd();
 	$("#Image").attr("src", process.env.PUBLIC_URL + urls[idx]);
 }
 
@@ -106,6 +108,23 @@ function imgZoom() {
 	console.log("Image click " + img.height)
 }
 
+function idxAdd() {
+	var i = idx + 1;
+	count ++;
+	if (count >= n) {
+		$( "#Image" ).replaceWith( "<h2 style={{color:'green'}}>All Done.</h2>" );
+	}
+ 	if (i === n) {
+		i = 0;
+	}
+
+	return i;
+}
+
+function idxRnd() {
+	return Math.floor(Math.random() * (n - 0 + 1)) + 0;
+}
+
 // map images
 function importAll(r) {
   return r.keys().map(r);
@@ -114,5 +133,9 @@ function importAll(r) {
 
 // urls is now set to all images
 const urls = importAll(require.context('../../public/photos', false, /\.(png|jpe?g|svg)$/));
-var idx = 0;
+console.log(urls);
+// var idx = 0;
+var n = urls.length;
+var count = 0;
+var idx = idxRnd();
 export default Runner;
